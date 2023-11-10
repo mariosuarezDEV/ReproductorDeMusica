@@ -1,12 +1,18 @@
 import flet as ft
 import pygame
 import keyboard as kyb
+
+from pydub import AudioSegment
+
+audio = AudioSegment.from_file()
+
 #funciones del sistema
 pygame.init()
 contador_inicio= 0
+fast = False
 
 def main(page: ft.Page):
-    pygame.mixer.music.load("se_va_1_llegan_2_nicki_nicole.mp3")
+    pygame.mixer.music.load("playlist/se_va_1_llegan_2_nicki_nicole.mp3")
     page.title="LMS PLAY"
     #CAMBIAR TEMA DE LA APP
     page.window_width=470
@@ -56,7 +62,17 @@ def main(page: ft.Page):
         page.update()
     
     def fast_adelantar(e):
-        #ola
+        global fast
+        if not fast:
+            pygame.mixer.music.load(audio)
+            fast = True
+        else:
+            
+            fast=False
+        
+        page.snack_bar=ft.SnackBar(ft.text("Se duplicó la velocidad"))
+        page.snack_bar.open=True
+        page.update()
         #Investigar como adelantar la musica (la funcion de bloquear botones se desarrolla aparte)
         #revisar la documentacion de las librerias que se usan en este proyecto
         #considerar que cualquier cambio en cuanto a el modo de administracion de las canciones es cambiar la logica y estructura del codigo
@@ -97,5 +113,6 @@ def main(page: ft.Page):
     page.add(nav)
     kyb.add_hotkey('ctrl+c', lambda: reproducir(None))
     kyb.add_hotkey('ctrl+x', lambda: parar(None))
+    kyb.add_hotkey('ctrl+shift+s', lambda: fast_adelantar(None))
 
 ft.app(target=main)
