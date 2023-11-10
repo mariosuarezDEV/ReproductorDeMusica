@@ -2,10 +2,6 @@ import flet as ft
 import pygame
 import keyboard as kyb
 
-from pydub import AudioSegment
-
-audio = AudioSegment.from_file()
-
 import os
 
 #funciones del sistema
@@ -48,6 +44,20 @@ def main(page: ft.Page):
 
     page.add(imagen)
     
+    def bloquear_Botones():
+        btn_play.content.icon_color=ft.colors.GREY_600
+        btn_play.content.update()
+        btn_stop.content.icon_color=ft.colors.GREY_600
+        btn_stop.content.update()
+        fast_restroceso.content.icon_color=ft.colors.GREY_600
+        fast_restroceso.content.update()
+        fast_avanzar.content.icon_color=ft.colors.GREY_900
+        fast_avanzar.content.update()
+        page.snack_bar=ft.SnackBar(ft.Text("Velocidad: X2"))         
+        page.snack_bar.open=True
+        page.update()
+            
+
     def reproducir(t):
         global contador_inicio
         btn_play.content.selected_icon=ft.icons.PAUSE_ROUNDED
@@ -76,37 +86,36 @@ def main(page: ft.Page):
         page.update()
     
     def fast_adelantar(e):
-        global fast
-        if not fast:
-            pygame.mixer.music.load(audio)
-            fast = True
+        selector = fast_avanzar.content.selected = not fast_avanzar.content.selected
+        #print(selector)
+        if selector == False:
+            print("botones en normalidad")
+            btn_play.content.icon_color=ft.colors.BLACK
+            btn_play.content.update()
+            btn_stop.content.icon_color=ft.colors.BLACK
+            btn_stop.content.update()
+            fast_restroceso.content.icon_color=ft.colors.BLACK
+            fast_restroceso.content.update()
+            fast_avanzar.content.icon_color=ft.colors.BLACK
+            fast_avanzar.content.update()
         else:
-            
-            fast=False
-        
-        page.snack_bar=ft.SnackBar(ft.text("Se duplicó la velocidad"))
-        page.snack_bar.open=True
-        page.update()
-        #Investigar como adelantar la musica (la funcion de bloquear botones se desarrolla aparte)
-        #revisar la documentacion de las librerias que se usan en este proyecto
-        #considerar que cualquier cambio en cuanto a el modo de administracion de las canciones es cambiar la logica y estructura del codigo
-        pass
+            bloquear_Botones()
         
     
     #AÑADIR LOS BOTONES
     #crear el contenedor de los botones
     fast_restroceso = ft.Container(
-        content=ft.IconButton(icon=ft.icons.FAST_REWIND_ROUNDED, icon_size=40)
+        content=ft.IconButton(icon=ft.icons.FAST_REWIND_ROUNDED, icon_size=40,style=ft.ButtonStyle(color={"":ft.colors.BLACK}))
     )
     btn_play = ft.Container(
         content=ft.IconButton(icon=ft.icons.PLAY_ARROW_ROUNDED, icon_size=40,
-        on_click=reproducir)
+        on_click=reproducir,style=ft.ButtonStyle(color={"":ft.colors.BLACK}))
     )
     fast_avanzar = ft.Container(
-        content=ft.IconButton(icon=ft.icons.FAST_FORWARD_ROUNDED, icon_size=40, on_click=fast_adelantar)
+        content=ft.IconButton(icon=ft.icons.FAST_FORWARD_ROUNDED, icon_size=40, on_click=fast_adelantar,style=ft.ButtonStyle(color={"":ft.colors.BLACK}))
     )
     btn_stop = ft.Container(
-        content=ft.IconButton(icon=ft.icons.STOP_ROUNDED, icon_size=40,selected_icon=ft.icons.STOP_ROUNDED,on_click=parar)
+        content=ft.IconButton(icon=ft.icons.STOP_ROUNDED, icon_size=40,selected_icon=ft.icons.STOP_ROUNDED,on_click=parar,style=ft.ButtonStyle(color={"":ft.colors.BLACK}))
     )
     
     nav = ft.Container(
@@ -129,4 +138,6 @@ def main(page: ft.Page):
     kyb.add_hotkey('ctrl+x', lambda: parar(None))
     kyb.add_hotkey('ctrl+shift+s', lambda: fast_adelantar(None))
 
+
+#agregar señales de otra terminal
 ft.app(target=main)
