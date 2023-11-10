@@ -56,6 +56,7 @@ def main(page: ft.Page):
         page.update()
     
     def fast_adelantar(e):
+        #ola
         #Investigar como adelantar la musica (la funcion de bloquear botones se desarrolla aparte)
         #revisar la documentacion de las librerias que se usan en este proyecto
         #considerar que cualquier cambio en cuanto a el modo de administracion de las canciones es cambiar la logica y estructura del codigo
