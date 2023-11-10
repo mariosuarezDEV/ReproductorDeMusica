@@ -1,12 +1,24 @@
 import flet as ft
 import pygame
 import keyboard as kyb
+import os
 #funciones del sistema
 pygame.init()
 contador_inicio= 0
 
 def main(page: ft.Page):
-    pygame.mixer.music.load("se_va_1_llegan_2_nicki_nicole.mp3")
+    #crear una playlist
+    fichero="playlist"
+    archivos_del_fichero = os.listdir(fichero)
+    canciones = []
+    for i in archivos_del_fichero:
+        if os.path.isfile(os.path.join(f"{fichero}/",i)):
+            filtrar = os.path.splitext(i)
+            if filtrar[1] == ".mp3":
+                canciones.append(i)
+    print(canciones)
+
+    pygame.mixer.music.load(f"{fichero}/{canciones[0]}")
     page.title="LMS PLAY"
     #CAMBIAR TEMA DE LA APP
     page.window_width=470
