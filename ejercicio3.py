@@ -3,26 +3,27 @@ import pygame
 import keyboard as kyb
 
 from pydub import AudioSegment
-
-audio = AudioSegment.from_file()
+from pydub.playback import play
 
 import os
 
-#funciones del sistema
+#funciones del sistema 
 pygame.init()
 contador_inicio= 0
 fast = False
-
+canciones = []
 def main(page: ft.Page):
+    
     pygame.mixer.music.load("playlist/se_va_1_llegan_2_nicki_nicole.mp3")
     #crear una playlist
     fichero="playlist"
     archivos_del_fichero = os.listdir(fichero)
-    canciones = []
+    
+    global canciones
     for i in archivos_del_fichero:
         if os.path.isfile(os.path.join(f"{fichero}/",i)):
             filtrar = os.path.splitext(i)
-            if filtrar[1] == ".mp3":
+        if filtrar[1] == ".mp3":
                 canciones.append(i)
     print(canciones)
 
@@ -74,27 +75,18 @@ def main(page: ft.Page):
         page.snack_bar=ft.SnackBar(ft.Text("Se detuvo la canción"))
         page.snack_bar.open=True
         page.update()
-    
+        
+        
     def fast_adelantar(e):
-        global fast
-        if not fast:
-            pygame.mixer.music.load(audio)
-            fast = True
-        else:
-            
-            fast=False
-        
-        page.snack_bar=ft.SnackBar(ft.text("Se duplicó la velocidad"))
-        page.snack_bar.open=True
-        page.update()
-        #Investigar como adelantar la musica (la funcion de bloquear botones se desarrolla aparte)
-        #revisar la documentacion de las librerias que se usan en este proyecto
-        #considerar que cualquier cambio en cuanto a el modo de administracion de las canciones es cambiar la logica y estructura del codigo
-        pass
-        
-    
+        song = "circles_post_malone.mp3"
+        audio = AudioSegment.from_mp3(song)
+        velocidad = 1.5
+        nuevo_audio = audio.speedup(velocidad,150,25)
+        nuevo_audio.export(song[:-4] + "_Out.mp3", format='mp3')
+        play(nuevo_audio)
     #AÑADIR LOS BOTONES
     #crear el contenedor de los botones
+    
     fast_restroceso = ft.Container(
         content=ft.IconButton(icon=ft.icons.FAST_REWIND_ROUNDED, icon_size=40)
     )
