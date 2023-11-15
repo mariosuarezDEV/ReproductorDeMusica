@@ -78,12 +78,12 @@ def main(page: ft.Page):
         
         
     def fast_adelantar(e):
-        song = "circles_post_malone.mp3"
-        audio = AudioSegment.from_mp3(song)
-        velocidad = 1.5
-        nuevo_audio = audio.speedup(velocidad,150,25)
-        nuevo_audio.export(song[:-4] + "_Out.mp3", format='mp3')
-        play(nuevo_audio)
+        song = AudioSegment.from_file(f"playlist/{canciones[0]}" )
+        song_dupli = song.speedup(playback_speed=2.0)
+        new_song =f"playslit/{canciones[1]}"
+        song_dupli.export(new_song, format="mp3")
+        return new_song
+        
     #AÑADIR LOS BOTONES
     #crear el contenedor de los botones
     
